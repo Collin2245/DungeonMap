@@ -11,7 +11,7 @@ class Room
 
 
 private:
-    std::string name;
+    std::__cxx11::string   name;
     Door * up;
     Door * down;
     Door * left;

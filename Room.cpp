@@ -14,13 +14,13 @@ using std::string;
  {
      if(test->isHere)
      {
-         string returnVal ="Door here\n!";
-         return string(returnVal, 12);
+
+         return "Door here!\n";
      }
      else
      {
-         std::string returnVal ="No Door\n";
-         return std::string(returnVal,9);
+
+         return "No Door\n";
      }
      
 
@@ -29,9 +29,9 @@ using std::string;
  void Room::displayRoom()
  {
      std::cout<<this->name;
-     std::cout<<"Up door:"<< checkDoor(this->up);
-     std::cout<<"Down door:"<< checkDoor(this->down);
-     std::cout<<"Left door:"<< checkDoor(this->left);
-     std::cout<<"Right door:"<< checkDoor(this->right); 
+     std::cout<<"Up door: "<< checkDoor(this->up);
+     std::cout<<"Down door: "<< checkDoor(this->down);
+     std::cout<<"Left door: "<< checkDoor(this->left);
+     std::cout<<"Right door: "<< checkDoor(this->right); 
      
  }

@@ -5,7 +5,7 @@ Door::Door(bool isHere)
     this->isHere = isHere;
 }
 
-Door::Door(bool isHere)
+Door::Door()
 {
     this->isHere = 0;
 }
