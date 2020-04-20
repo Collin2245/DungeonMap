@@ -1,6 +1,8 @@
 #ifndef Door_hpp
 #define Door_hpp
 
+
+class Room;
 class Door
 {
 
@@ -10,8 +12,10 @@ private:
 
 public:
     bool isHere;
-    Door();
-    Door(bool isHere);
+    Room * nextRoom;
+    //Door();
+    Door(Room * nextRoom);
+
 
 };
 
