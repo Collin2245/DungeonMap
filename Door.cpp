@@ -2,26 +2,19 @@
 #include "Room.hpp"
 
 
-Door::Door(Room * nextRoom)
+Door::Door(Room * room1, Room * room2)
 {
-    if(nextRoom)
-    {
+ 
     this->isHere = 1;
-    this->nextRoom = nextRoom;
-    }
-    else
-    {
-        this->isHere = 0;
-        //this->nextRoom = 0;
-    }
-    
+    this->room1 = room1;
+    this->room2 = room2;
 
 }
 
-// Door::Door()
-// {
-//     this->isHere = 0;
-//     this->nextRoom = 0;
-// }
+Door::Door()
+{
+    this->isHere = 0;
+
+}
 
 

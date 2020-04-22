@@ -6,6 +6,7 @@
 
 
 class Room;
+class Door;
 
 class Student
 {
@@ -17,6 +18,7 @@ private:
 public:
     Student(Room * currentRoom);
     std::string tryToLeave(char  direction);
+    Room * otherRoom(Door * currentDoor);
 
 
 };
