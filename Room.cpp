@@ -1,51 +1,100 @@
 #include "Room.hpp"
+#include <iostream>
 #include "Door.hpp"
-#include <stdlib.h>
-#include <stdio.h>
+#include "Item.hpp"
 
+using namespace std;
 
-using std::string;
+Room::Room(string title)
+{
+    this->title = title;
+    this->currentNumberOfDoors = 0;
+    this->hasItem = false;
+}
 
+void Room::addDoor(Door* aDoor)
+{
+    this->collectionOfDoors[this->currentNumberOfDoors] = aDoor;
+    this->currentNumberOfDoors++;
+    this->theStudents = new LinkedListOfStudents();
+}
 
+void Room::addStudent(Student* aStudent)
+{
+    if(this->theStudents->indexOf(aStudent) == -1)
+    {
+        this->theStudents->addFront(aStudent);
+        aStudent->setCurrentRoom(this);
+    } 
+}
 
- Room::Room()
- {
+void Room::removeStudent(Student* aStudent)
+{
+    int indexOfStudent = this->theStudents->indexOf(aStudent);
+    if(indexOfStudent != -1)
+    {
+        this->theStudents->removeAtIndex(indexOfStudent);
+        aStudent->setCurrentRoom(0); //the student is in limbo
+    }
+}
+
+void Room::takeDoor(Student* aStudent, string direction)
+{
+    Door* tempDoor;
+    Room* currentRoom = this;
+    for(int i = 0; i < this->currentNumberOfDoors; i++)
+    {
+        tempDoor = this->collectionOfDoors[i];
+        if(tempDoor->getDirectionToOtherRoom(currentRoom) == direction)
+        {
+            Room* theOtherRoom = tempDoor->getTheOtherRoom(currentRoom);
+            
+            //remove the student from the current room
+            this->removeStudent(aStudent);
+
+            //put the student in the new room
+            theOtherRoom->addStudent(aStudent);
+        }
+    }
+}
+
+void Room::display()
+{
+    cout << this->title << "\n";
+
+    //show the potential doors
+    cout << "Obvious Exits: ";
+    Door* tempDoor = 0;
     
- }
- 
- void Room::setValues(string name, Door * up, Door * down, Door * left, Door * right)
- {
-     this->name =  name;
-     this->up = up;
-     this->down = down;
-     this->left = left;
-     this->right = right;
- }
+    for(int i = 0; i < this->currentNumberOfDoors; i++)
+    {
+        tempDoor = this->collectionOfDoors[i];
+        cout << tempDoor->getDirectionToOtherRoom(this) << " ";
+    }
+    cout << "\nAlso Here: ";
+    Student* tempStudent;
 
- string Room::checkDoor(Door * test)
- {
-     if(test->isHere)
-     {
+    for(int i = 0; i < this->theStudents->getCount(); i++)
+    {
+        tempStudent = this->theStudents->getAtIndex(i);
+        cout << tempStudent->getName() << " ";
+    }
+     if(this->hasItem)
+    {
+        cout << "\n"<<"Item here: " <<this->itemInRoom->getName() << ""<<"\n";
+    }
+    cout << "\n";
+}
 
-         return "Door here!\n";
-     }
-     else
-     {
 
-         return "No Door\n";
-     }
-     
+void Room::addItem(Item * nameOfItem)
+{
+    this->itemInRoom = nameOfItem;
+    hasItem = true;
+}
 
- }
-
- void Room::displayRoom()
- {
-     //std::cout << "\033[0;" << 15 << "mHello!\033[0m" << std::endl;
-     std::cout<<this->name<<"\n";
-     std::cout<<"Up door: "<< checkDoor(this->up);
-     std::cout<<"Down door: "<< checkDoor(this->down);
-     std::cout<<"Left door: "<< checkDoor(this->left);
-     std::cout<<"Right door: "<< checkDoor(this->right); 
-     std::cout<<"\n";
-     
- }
+void Room::emptyItems()
+{
+    this->itemInRoom = 0;
+    hasItem = false;
+}

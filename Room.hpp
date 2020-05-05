@@ -1,37 +1,33 @@
 #ifndef Room_hpp
 #define Room_hpp
 
-#include <iostream>
-#include <string.h>
-#include <stdlib.h>
+#include <string>
+#include "LinkedListOfStudents.hpp"
 
+class Item;
+class Door; // allows us to reference door when door refereneces Room.
 
-class Door;
+using namespace std;
+
 class Room
 {
-
-
-private:
-
-    std::string checkDoor(Door * test);
-
-
-
-public:
-    Room();
-    void setValues(std::string name, Door * up, Door * down, Door * left, Door * right);
-    void displayRoom();
-    std::__cxx11::string name;
-    Door * up;
-    Door * down;
-    Door * left;
-    Door * right;
-
+    private:
+        string title;
+        Door* collectionOfDoors[10];
+        int currentNumberOfDoors;
+        LinkedListOfStudents* theStudents;
+    
+    public:
+        Room(string title);
+        void addDoor(Door* aDoor);
+        void display();
+        void addStudent(Student* aStudent);
+        void removeStudent(Student* aStudent);
+        void takeDoor(Student* aStudent, string direction);
+        void addItem(Item * nameOfItem);
+        Item * itemInRoom;
+        bool hasItem;
+        void emptyItems();
 
 };
-
-
-
-
-
 #endif

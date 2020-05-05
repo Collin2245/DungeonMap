@@ -1,103 +1,62 @@
-#include "student.hpp"
-#include "Door.hpp"
-#include "Room.hpp"
+#include "Student.hpp"
 #include <stdlib.h>
+#include <iostream>
 
-using std::string;
+using namespace std;
 
-Student::Student(Room * currentRoom)
+Student::Student(string name)
 {
-    this->currentRoom = currentRoom;
+    this->name = name;
+    this->currentRoom = 0;
+    this->maxItemCount = 10;
+    this->currentItemCount = 0;
+    this->backpack = (Item**)malloc(this->maxItemCount * sizeof(Item*));
 }
 
-Room * Student::otherRoom(Door * currentDoor)
+void Student::displayBackpackContents()
 {
-    if(currentDoor->room1 == this->currentRoom)
+    for(int i = 0; i < this->currentItemCount; i++)
     {
-        return currentDoor->room2;
+        cout << this->backpack[i]->getName() << "\n";
+    }
+}
+
+bool Student::addItem(Item* anItem)
+{
+    if(this->currentItemCount == this->maxItemCount)
+    {
+        return false;
     }
     else
     {
-        return currentDoor->room1;
-    }
-    
+        this->backpack[this->currentItemCount] = anItem;
+        this->currentItemCount++;
+        return true;
+    } 
 }
 
-string Student::tryToLeave(char direction)
+string Student::getName()
 {
-    if(direction == 'w')
-    {
-        if(this->currentRoom->up->isHere)
-        {
-            this->currentRoom = this->otherRoom(this->currentRoom->up);
-                        std::cout<<"#############################################################\n";
+    return this->name;
+}
 
-            this->currentRoom->displayRoom();
+void Student::setCurrentRoom(Room* aRoom)
+{
+    this->currentRoom = aRoom;
+}
 
-            return "In new room\n";
-        }
-        else
-        {
-            std::cout<<"#############################################################\n";
-            this->currentRoom->displayRoom();
-            return "No door here\n";
-        }
-    }
-    else if(direction == 's')
-    {
-        if(this->currentRoom->down->isHere)
-        {
-            this->currentRoom = this->otherRoom(this->currentRoom->down);
-            std::cout<<"#############################################################\n";
-            this->currentRoom->displayRoom();
-            return "In new room\n";
-        }
-        else
-        {
-            std::cout<<"#############################################################\n";
-            this->currentRoom->displayRoom();
-            return "No door here\n";
+Room* Student::getCurrentRoom()
+{
+    return this->currentRoom;
+}
 
-        } 
-    }
-    else if(direction == 'a')
+Item * Student::getOldestItem()
+{
+    Item * temp = this->backpack[0];
+    for(int i = 0; i < this->currentItemCount; i ++)
     {
-        if(this->currentRoom->left->isHere)
-        {
-            this->currentRoom = this->otherRoom(this->currentRoom->left);
-            std::cout<<"#############################################################\n";
-            this->currentRoom->displayRoom();
-            return "In new room\n";
-        }
-        else
-        {
-            std::cout<<"#############################################################\n";
-            this->currentRoom->displayRoom();
-            return "No door here\n";
-        }
+        this->backpack[i] = this->backpack[i+1];
     }
-    else if(direction == 'd')
-    {
-        if(this->currentRoom->right->isHere)
-        {
-            this->currentRoom = this->otherRoom(this->currentRoom->right);
-            std::cout<<"#############################################################\n";
-            this->currentRoom->displayRoom();
-            return "In new room\n";
-        }
-        else
-        {
-            std::cout<<"#############################################################\n";
-            this->currentRoom->displayRoom();
-            return "No door here\n";
-
-        }
-    }
-    else
-    {
-        std::cout<<"#############################################################\n";
-        this->currentRoom->displayRoom();
-        return "Error input";
-    }
-    
+    this->currentItemCount--;
+    return temp;
 }

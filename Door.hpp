@@ -1,25 +1,24 @@
+#include <string>
+
 #ifndef Door_hpp
 #define Door_hpp
 
-
 class Room;
+
+using namespace std;
+
 class Door
 {
+    private:
+        string directionToRoomA;
+        string directionToRoomB;
+        Room* roomA;
+        Room* roomB;
 
-private:
-
-
-
-public:
-    bool isHere;
-    //Room * nextRoom;
-    //Door();
-    Door(Room * room1, Room * room2);
-    Door();
-    Room * room1;
-    Room * room2;
-
-
+    public:
+        Door(string directionToRoomA, Room* roomA, string directionToRoomB, Room* roomB);
+        string getDirectionToOtherRoom(Room* currentRoom);
+        Room* getTheOtherRoom(Room* currentRoom);
+        bool hasDirection(string direction);
 };
-
 #endif
